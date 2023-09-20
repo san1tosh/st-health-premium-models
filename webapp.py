@@ -65,7 +65,7 @@ def main():
     else:
         p5 = 0
 
-    p6 = st.slider("Enter Your Region",("Southwest","Southeast", "Northwest", "Northeast"))
+    p6 = st.selectbox("Enter Your Region",("Southwest","Southeast", "Northwest", "Northeast"))
     if p6=="Southwest":
         p6=1
     elif p6=="Southeast":
