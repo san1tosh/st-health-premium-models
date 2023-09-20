@@ -75,7 +75,7 @@ def main():
     else:
         p6=4
 
-    if st.button("Predict for GradientBoostingRegressor"):
+    if st.button("Predict"):
         prediction = model1.predict([[p1, p2, p3, p4, p5, p6]])
         st.balloons()
         y_pred1 = gr.predict(X_test)
