@@ -5,6 +5,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn import metrics
 
 data = pd.read_csv("insurance.csv")
 data["sex"].unique()
@@ -64,7 +65,15 @@ def main():
     else:
         p5 = 0
 
-    p6 = st.slider("Enter Your Region [1-4]", 1, 4)
+    p6 = st.slider("Enter Your Region",("Southwest","Southeast", "Northwest", "Northeast"))
+    if p6=="Southwest":
+        p6=1
+    elif p6=="Southeast":
+        p6=2
+    elif p6=="Northwest":
+        p6=3
+    else:
+        p6=4
 
     if st.button("Predict for GradientBoostingRegressor"):
         prediction = model1.predict([[p1, p2, p3, p4, p5, p6]])
@@ -72,33 +81,15 @@ def main():
         y_pred1 = gr.predict(X_test)
         df1 = pd.DataFrame({"Actual": y_test, "gr": y_pred1})
         st.line_chart(df1)
+        st.bar_chart(df1)
+        st.area_chart(df1)
         st.dataframe(df1)
         st.success("Insurance Amount is {} ".format(round(prediction[0], 2)))
-    if st.button("Predict for linear regression"):
-        prediction = model2.predict([[p1, p2, p3, p4, p5, p6]])
-        st.balloons()
-        y_pred2 = lr.predict(X_test)
-        df1 = pd.DataFrame({"Actual": y_test, "lr": y_pred2})
-        st.line_chart(df1)
-        st.dataframe(df1)
-        st.success("Insurance Amount is {} ".format(round(prediction[0], 2)))
-    if st.button("Predict for support vector regression"):
-        prediction = model3.predict([[p1, p2, p3, p4, p5, p6]])
-        st.balloons()
-        y_pred3 = svr.predict(X_test)
-        df1 = pd.DataFrame({"Actual": y_test, "svr": y_pred3})
-        st.line_chart(df1)
-        st.dataframe(df1)
-        st.success("Insurance Amount is {} ".format(round(prediction[0], 2)))
-    if st.button("Predict for random forest regressor"):
-        prediction = model4.predict([[p1, p2, p3, p4, p5, p6]])
-        st.balloons()
-        y_pred4 = rf.predict(X_test)
-        df1 = pd.DataFrame({"Actual": y_test, "rf": y_pred4})
-        st.line_chart(df1)
-        st.dataframe(df1)
-        st.success("Insurance Amount is {} ".format(round(prediction[0], 2)))
-
+        s1 = metrics.mean_absolute_error(y_test,y_pred1)
+        st.write(f"Mean absolute error is {s1}")
+        score1 = metrics.r2_score(y_test,y_pred1)
+        st.write(f"R SQUARED (R2) metric is {score1}")
+    
 
 if __name__ == "__main__":
     main()
